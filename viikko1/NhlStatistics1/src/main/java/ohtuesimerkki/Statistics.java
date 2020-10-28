@@ -6,11 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Statistics {
+    
+    private Reader reader;
 
     private List<Player> players;
 
-    public Statistics() {
-        PlayerReader reader = new PlayerReader("https://nhlstatisticsforohtu.herokuapp.com/players.txt");
+    public Statistics(Reader reader) {
+        this.reader = reader;       
         players = reader.getPlayers();       
     }
 
