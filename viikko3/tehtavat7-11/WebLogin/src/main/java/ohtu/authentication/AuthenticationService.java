@@ -59,7 +59,6 @@ public class AuthenticationService {
             status.addError("password and password confirmation do not match");
         }
 
-
         if (status.isOk()) {
             userDao.add(new User(username, password));
         }
