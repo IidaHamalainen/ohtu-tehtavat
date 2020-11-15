@@ -55,6 +55,9 @@ public class AuthenticationService {
         if (letters == password.length()) {
             status.addError("password should not have only letters");
         }
+        if (!(passwordConfirmation.equals(password))) {
+            status.addError("password and password confirmation do not match");
+        }
 
 
         if (status.isOk()) {

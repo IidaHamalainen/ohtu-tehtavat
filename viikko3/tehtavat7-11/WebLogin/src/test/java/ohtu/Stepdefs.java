@@ -3,6 +3,7 @@ package ohtu;
 import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
+import ohtu.util.CreationStatus;
 import io.cucumber.java.en.Then;
 import static org.junit.Assert.*;
 import org.openqa.selenium.WebDriver;
@@ -74,11 +75,38 @@ public class Stepdefs {
         createNewUser(username, password, password);
     }
     @Then("user is not created and error {string} is reported")
-    public void userIsNotCreatedAndErrorIsReported(String string) {
-        pageHasContent("username should have at least 3 characters");
+    public void userIsNotCreatedAndErrorIsReported(String error) {
+        pageHasContent(error);
         pageHasContent("Create username and give password");
-    }    
-    
+    }  
+
+    @When("a valid username {string} and too short password {string} and matching password confirmation are entered") 
+    public void newUserWithTooShortPassword(String username, String password) {
+        createNewUser(username, password, password);
+    } 
+
+    @When("a valid username {string} and password {string} and wrong password confirmation {string} are entered")
+    public void aValidUsernameAndPasswordAndWrongPasswordConfirmationAreEntered(String username, String password, String passwordConfirmation) {
+        createNewUser(username, password, passwordConfirmation);
+    }
+
+    @Given("user with username {string} with password {string} is successfully created")
+    public void aNewUserIsCreatedWithUsernameAndPassword(String username, String password) {
+        driver.get(baseUrl);
+        WebElement element = driver.findElement(By.linkText("register new user"));       
+        element.click(); 
+        createNewUser(username, password, password);
+
+    }
+
+    @Given("user with username {string} and password {string} is tried to be created")
+    public void aNewUserisTriedToBeCreatedWithBadusernameAndPassword(String username, String password) {
+        driver.get(baseUrl);
+        WebElement element = driver.findElement(By.linkText("register new user"));       
+        element.click(); 
+        createNewUser(username, password, password);
+    }
+
     @After
     public void tearDown(){
         driver.quit();
@@ -106,7 +134,7 @@ public class Stepdefs {
         element = driver.findElement(By.name("password"));
         element.sendKeys(password);
         element = driver.findElement(By.name("passwordConfirmation"));
-        element.sendKeys(password);
+        element.sendKeys(passwordConfirmation);
         element = driver.findElement(By.name("signup"));
         element.submit();
     }
